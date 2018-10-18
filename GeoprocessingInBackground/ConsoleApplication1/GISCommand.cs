@@ -16,7 +16,7 @@ namespace ConsoleApplication1
     public class GISCommand
     {
 
-        public async void DoGeoprocessingThing(CancellationToken cts, BackgroundWorker worker)
+        public Task<string> DoGeoprocessingThing(CancellationToken cts, BackgroundWorker worker)
         {
 
             System.Object obj = "";
@@ -35,7 +35,7 @@ namespace ConsoleApplication1
 
                 // ###########################################
                 // This process will fail if you've already started ArcObjects by opening the form UI dialog
-                gp.AddToolbox(@"C:\temp\HelloTest.tbx"); //path to your toolbox here
+                gp.AddToolbox(@"C:\temp\ArcObjectsIssue\HelloTest.tbx"); //path to your toolbox here!!!!!!!!!!!!!!!
                 IVariantArray parameters = new VarArrayClass();
                 parameters = new VarArrayClass();
                 parameters.Add("Hello Geoprocessing Tool with Python Script!");
@@ -47,6 +47,8 @@ namespace ConsoleApplication1
             {
                 Console.WriteLine(e.ToString());
                 Console.WriteLine(ReturnGpMessages(gp, obj)); //from a support library not shared here.
+
+                throw new Exception("yeah things went south");
             }
             finally
             {
@@ -55,6 +57,8 @@ namespace ConsoleApplication1
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
+
+            return null;
         }
 
         /// <summary>

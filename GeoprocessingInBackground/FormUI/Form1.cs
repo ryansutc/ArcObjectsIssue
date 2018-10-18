@@ -50,8 +50,9 @@ namespace FormUI
 
             cts = new CancellationTokenSource(); //instantiate cancellation token
 
-            gisCommand.DoGeoprocessingThing(cts.Token, worker);
-           
+            var asyncError = gisCommand.DoGeoprocessingThing(cts.Token, worker);
+            if (asyncError.Status.ToString() == "Canceled") e.Cancel = true;
+            if (asyncError.Exception != null) throw new Exception(asyncError.Exception.InnerException.Message);
             //**************************************************************
 
         }
